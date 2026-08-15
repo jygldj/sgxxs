@@ -1,1 +1,1 @@
-var SITE_BASE = 'https://jygldj.github.io/sgxxs';
+var SITE_BASE = 'https://sgxxs.pages.dev';
