@@ -77,6 +77,9 @@
                 metaDone = true;
             }
 
+            // 跳过 markdown 水平分隔线（---），小说正文不需要
+            if (s === '---') continue;
+
             bodyLines.push(lines[i]);
         }
 

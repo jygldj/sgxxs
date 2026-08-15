@@ -94,6 +94,9 @@
             s = contentLines[i].trim();
             if (!s) { flushPara(); continue; }
 
+            // 跳过 markdown 水平分隔线（---）
+            if (s === '---') { flushPara(); continue; }
+
             var h3 = s.match(H3_RE);
             if (h3) { flushPara(); html += '<h3>' + inline(escapeHtml(h3[1])) + '</h3>'; continue; }
             var h2 = s.match(H2_RE);

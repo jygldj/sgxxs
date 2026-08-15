@@ -11,71 +11,7 @@
         let isDataLoaded = false;
 
         // ============================================================
-        // 2. 分卷相关变量与函数
-        // ============================================================
-        let currentVolume = 1;
-        let volumes = [];
-
-        function getTotalVolumes() {
-            return volumes.length;
-        }
-
-        function getCurrentVolumeArticles() {
-            if (!volumes.length) return articles;
-            const juan = volumes[currentVolume - 1];
-            return articles.filter(a => (a.juan || '') === juan);
-        }
-
-        // 动态生成卷导航按钮
-        function renderVolumeNav() {
-            const navContainer = document.getElementById('mainNav');
-            navContainer.querySelectorAll('.volume-btn').forEach(btn => btn.remove());
-            if (volumes.length <= 1) return;
-
-            const wechatLink = navContainer.querySelector('a[href*="wechat"]');
-
-            volumes.forEach(function (juanName, idx) {
-                const i = idx + 1;
-                const a = document.createElement('a');
-                a.href = '#';
-                a.className = 'page-link volume-btn' + (i === currentVolume ? ' active' : '');
-                a.dataset.vol = i;
-                a.textContent = juanName;
-                a.onclick = function(e) {
-                    e.preventDefault();
-                    switchVolume(i);
-                };
-                navContainer.insertBefore(a, wechatLink);
-            });
-        }
-
-        // 切换卷
-        function switchVolume(vol) {
-            if (vol === currentVolume) return;
-            currentVolume = vol;
-            document.querySelectorAll('.volume-btn').forEach(btn => {
-                btn.classList.toggle('active', parseInt(btn.dataset.vol) === vol);
-            });
-            const filterSelect = document.getElementById('categoryFilter');
-            if (filterSelect) {
-                filterSelect.value = 'all';
-                activeFilter = 'all';
-            }
-            currentSearchKeyword = '';
-            document.getElementById('searchInput').value = '';
-            renderArticleList();
-            const filtered = applyFilters();
-            if (filtered.length > 0) {
-                loadArticle(articles.indexOf(filtered[0]));
-            } else {
-                document.getElementById('articleText').innerHTML = '<div class="loading">📭 该卷暂无文章</div>';
-                document.getElementById('articleTitle').textContent = '欢迎来到三国续-数字卜易传';
-                document.getElementById('articleMeta').innerHTML = '<span>请从左侧选择文章</span>';
-            }
-        }
-
-        // ============================================================
-        // 3. 加载数据（结构化 articles.js）
+        // 2. 加载数据（结构化 articles.js）
         // ============================================================
         function loadArticles() {
             try {
@@ -85,25 +21,15 @@
 
                 articles = articlesData.articles;
 
-                // 提取去重卷列表（按文章顺序：卷一~卷八）
-                volumes = [];
-                articles.forEach(function (a) {
-                    var j = a.juan || '';
-                    if (j && volumes.indexOf(j) === -1) volumes.push(j);
-                });
-                if (!volumes.length) volumes = ['默认'];
-                currentVolume = 1;
-
                 if (articles.length === 0) {
                     throw new Error('文章数据为空');
                 }
                 isDataLoaded = true;
                 console.log('✅ 成功加载 ' + articles.length + ' 篇文章');
 
-                renderVolumeNav();
                 renderArticleList();
 
-                // 优先：hash 路由（#42 → 第 42 篇），支持分享链接直接打开
+                // hash 路由（#42 → 第 42 篇），支持分享链接直接打开
                 if (openArticleFromHash()) return;
 
                 // 兼容：旧的 ?article=N 参数（0 起始序号）
@@ -112,10 +38,6 @@
                 if (articleId !== null) {
                     const index = parseInt(articleId);
                     if (!isNaN(index) && index >= 0 && index < articles.length) {
-                        const vol = articles[index].juan ? (volumes.indexOf(articles[index].juan) + 1) : 1;
-                        if (vol !== currentVolume) {
-                            switchVolume(vol);
-                        }
                         setTimeout(() => loadArticle(index), 300);
                         return;
                     }
@@ -139,7 +61,7 @@
         }
 
         // ============================================================
-        // 4. hash 路由（单篇分享链接，形如 index1.html#42）
+        // 3. hash 路由（单篇分享链接，形如 index1.html#42）
         // ============================================================
         function parseHashId() {
             const m = location.hash.match(/^#(\d+)$/);
@@ -152,14 +74,6 @@
             const id = parseHashId();
             if (id === null) return false;
             const index = id - 1;
-            const vol = articles[index].juan ? (volumes.indexOf(articles[index].juan) + 1) : 1;
-            if (vol !== currentVolume) {
-                currentVolume = vol;
-                document.querySelectorAll('.volume-btn').forEach(btn => {
-                    btn.classList.toggle('active', parseInt(btn.dataset.vol) === vol);
-                });
-                renderArticleList();
-            }
             loadArticle(index);
             return true;
         }
@@ -169,10 +83,10 @@
         });
 
         // ============================================================
-        // 5. 核心渲染与交互函数
+        // 4. 核心渲染与交互函数
         // ============================================================
 
-        // 渲染目录
+        // 渲染目录（全站平铺，按文章顺序列出所有章节）
         function renderArticleList() {
             const filteredArticles = applyFilters();
             const listContainer = document.getElementById('articleList');
@@ -180,8 +94,8 @@
 
             if (filteredArticles.length > 0) {
                 filteredArticles.forEach((article) => {
-                    const li = document.createElement('li');
                     const realIndex = articles.indexOf(article);
+                    const li = document.createElement('li');
                     li.innerHTML = `
                         <a href="#${article.id}" onclick="event.preventDefault(); loadArticle(${realIndex})" class="${currentArticleIndex === realIndex ? 'active' : ''}">
                             <span class="article-number">${article.id}.</span>
@@ -201,9 +115,9 @@
             listContainer.appendChild(fragment);
         }
 
-        // 应用筛选：先按卷筛选，再按分类筛选
+        // 应用筛选（当前无分类筛选，返回全部文章）
         function applyFilters() {
-            return getCurrentVolumeArticles();
+            return articles;
         }
 
         function filterArticles() {
@@ -301,7 +215,7 @@
                 return;
             }
 
-            // 全站搜索（跨卷）
+            // 全站搜索（含标题、正文、卷名）
             const filtered = articles.filter(a =>
                 a.title.toLowerCase().includes(currentSearchKeyword) ||
                 a.body.toLowerCase().includes(currentSearchKeyword) ||
@@ -310,7 +224,7 @@
 
             const listContainer = document.getElementById('articleList');
             if (filtered.length === 0) {
-                listContainer.innerHTML = `<li class="empty-hint">在当前卷中未找到包含"${currentSearchKeyword}"的文章</li>`;
+                listContainer.innerHTML = `<li class="empty-hint">未找到包含"${currentSearchKeyword}"的文章</li>`;
                 return;
             }
 
@@ -319,7 +233,7 @@
                     <a href="#${a.id}" onclick="event.preventDefault(); loadArticle(${articles.indexOf(a)})">
                         <span class="article-number">${a.id}.</span>
                         ${highlightKeyword(a.title, currentSearchKeyword)}
-                        <small>(${a.category})</small>
+                        <small>(${a.juan || a.category})</small>
                     </a>
                 </li>
             `).join('');
@@ -375,7 +289,7 @@
         }
 
         // ============================================================
-        // 6. 初始化
+        // 5. 初始化
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadArticles();
