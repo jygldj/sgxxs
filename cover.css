@@ -1,9 +1,9 @@
 :root {
-    --ink-color: #1a1a2e;
-    --paper-color: #f5f0e8;
-    --accent-color: #c0392b;
-    --gold-color: #d4a853;
-    --shadow-dark: rgba(0, 0, 0, 0.35);
+    --paper-color: #FFFEFC;      /* 仿古宣纸色 —— 与正文 style.css 一致 */
+    --ink-color: #2E3A33;        /* 深青墨 */
+    --accent-color: #3A6351;     /* 嫩荷青绿 —— 与正文按钮一致 */
+    --gold-color: #b08d57;       /* 暖金点缀 */
+    --shadow-dark: rgba(40, 50, 45, 0.18);
 }
 
 html, body {
@@ -16,17 +16,19 @@ html, body {
 
 body {
     font-family: "楷体", "STKaiti", "SimSun", serif;
-    /* 深墨蓝渐变背景 —— 与封面图色调统一 */
+    /* 仿古宣纸白渐变 + 极淡青瓷角晕 —— 与小说正文页面协调 */
     background:
-        radial-gradient(ellipse at 30% 20%, rgba(26, 26, 46, 0.7) 0%, transparent 55%),
-        radial-gradient(ellipse at 70% 80%, rgba(13, 17, 23, 0.6) 0%, transparent 50%),
-        linear-gradient(170deg, #0d1117 0%, #161b22 35%, #1a1a2e 70%, #21273b 100%);
-    color: var(--paper-color);
+        radial-gradient(ellipse at 18% 22%, rgba(58,99,81,0.07) 0%, transparent 42%),
+        radial-gradient(ellipse at 82% 78%, rgba(58,99,81,0.06) 0%, transparent 40%),
+        linear-gradient(160deg, #FFFEFC 0%, #F7F3E9 45%, #EFE8D8 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: var(--ink-color);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-attachment: fixed;
 }
 
 /* ================================================================
@@ -44,7 +46,6 @@ body {
     align-items: center;
 }
 
-/* 书背遮罩 */
 .book-back {
     position: absolute;
     top: 0; left: 0; right: 0;
@@ -54,25 +55,25 @@ body {
     pointer-events: none;
     background: linear-gradient(
         90deg,
-        rgba(60,50,40,0.25) 0%,
-        rgba(90,75,60,0.4) 15%,
-        rgba(80,65,50,0.25) 50%,
-        rgba(90,75,60,0.4) 85%,
-        rgba(60,50,40,0.25) 100%
+        rgba(200,190,170,0.18) 0%,
+        rgba(225,215,195,0.32) 15%,
+        rgba(210,200,180,0.2) 50%,
+        rgba(225,215,195,0.32) 85%,
+        rgba(200,190,170,0.18) 100%
     );
-    border: 1px solid rgba(120,100,80,0.3);
+    border: 1px solid rgba(180,165,140,0.35);
     box-shadow: 0 12px 30px var(--shadow-dark);
     z-index: 1;
     transition: opacity 0.05s;
 }
 
-/* 书封正面 */
+/* 书封正面 —— 宣纸白卡片，与正文观感统一 */
 .front-cover {
-    background: linear-gradient(145deg, rgba(22,27,38,0.96), rgba(33,39,59,0.94));
-    border: 1px solid rgba(212,168,83,0.25);
+    background: rgba(255, 254, 252, 0.96);
+    border: 1px solid rgba(58,99,81,0.25);
     box-shadow:
         0 12px 35px var(--shadow-dark),
-        inset 0 1px 0 rgba(255,255,255,0.05);
+        inset 0 1px 0 rgba(255,255,255,0.6);
     padding: 1.8rem 1.5rem;
     text-align: center;
     transform-origin: left center;
@@ -96,9 +97,9 @@ body {
     border-radius: 6px;
     overflow: hidden;
     box-shadow:
-        0 8px 24px rgba(0,0,0,0.45),
-        0 0 0 1px rgba(212,168,83,0.18);
-    line-height: 0; /* 消除图片底部间隙 */
+        0 8px 24px rgba(40,50,45,0.22),
+        0 0 0 1px rgba(58,99,81,0.18);
+    line-height: 0;
 }
 
 .cover-art img {
@@ -115,29 +116,28 @@ body {
 }
 
 /* ================================================================
-   展卷阅读按钮
+   展卷阅读按钮 —— 青绿（与正文按钮一致）
    ================================================================ */
 .open-book {
     display: inline-block;
     padding: 0.75rem 2.8rem;
-    background: linear-gradient(135deg, #c0392b, #a93226);
-    color: #fff;
+    background: linear-gradient(135deg, #3A6351, #2f5243);
+    color: #fffefc;
     border-radius: 4px;
     font-size: 1.05rem;
     letter-spacing: 3px;
     transition: all 0.3s;
     margin: 0.8rem 0 1.5rem;
-    border: 1px solid rgba(212,168,83,0.3);
+    border: 1px solid rgba(176,141,87,0.35);
     cursor: pointer;
     font-family: "楷体", "STKaiti", serif;
-    box-shadow: 0 4px 12px rgba(192,57,43,0.35);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(58,99,81,0.3);
 }
 
 .open-book:hover {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    background: linear-gradient(135deg, #4a7a64, #3A6351);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(192,57,43,0.45);
+    box-shadow: 0 6px 16px rgba(58,99,81,0.4);
     border-color: var(--gold-color);
 }
 
@@ -146,15 +146,16 @@ body {
 }
 
 /* ================================================================
-   兄弟站点链接区
+   兄弟站点链接区 —— 宣纸卡片 + 青绿链接
    ================================================================ */
 .links-section {
     width: 100%;
     max-width: 420px;
     padding: 1.2rem 1rem;
-    background: rgba(245,240,232,0.95);
+    background: rgba(247, 243, 233, 0.92);
+    border: 1px solid rgba(58,99,81,0.18);
     border-radius: 8px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 3px 12px rgba(40,50,45,0.08);
     margin-top: 0.5rem;
     order: 3;
 }
@@ -162,7 +163,7 @@ body {
 .links-title {
     text-align: center;
     margin-bottom: 0.9rem;
-    color: var(--ink-color);
+    color: var(--accent-color);
     font-size: 0.95rem;
     letter-spacing: 2px;
     font-weight: bold;
@@ -178,22 +179,21 @@ body {
 }
 
 .friend-links-grid a {
-    color: #2c3e50;
+    color: var(--accent-color);
     text-decoration: none;
     padding: 0.45rem 0.3rem;
-    border-bottom: 1px dashed rgba(44,62,80,0.3);
+    border-bottom: 1px dashed rgba(58,99,81,0.35);
     transition: all 0.25s;
     font-size: 0.88rem;
     border-radius: 3px;
 }
 
 .friend-links-grid a:hover {
-    color: var(--accent-color);
-    border-bottom-color: var(--accent-color);
-    background: rgba(192,57,43,0.06);
+    color: var(--ink-color);
+    border-bottom-color: var(--ink-color);
+    background: rgba(58,99,81,0.07);
 }
 
-/* 本站高亮 */
 .friend-links-grid a.self-link {
     color: var(--accent-color);
     font-weight: bold;
@@ -239,7 +239,6 @@ body {
     .open-book {
         padding: 0.9rem 3.2rem;
         font-size: 1.1rem;
-        writing-mode: horizontal-tb;
     }
 
     .links-section {
