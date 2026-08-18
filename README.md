@@ -1,18 +1,18 @@
 # 三国续-数字卜易传 · 网站说明（README）
 
 > 最后更新：2026-08-15
-> 维护人：jygldj ｜ 本地工作目录：`F:\github-dx\sgx`
+> 维护人：jygldj ｜ 本地工作目录：`F:\github-dx\sgxxs`
 
 ---
 
 ## 一、站点定位
 
-《三国续-数字卜易传》是「道玄文集」的**小说分站**，独立部署于 `https://sgx.pages.dev`。
+《三国续-数字卜易传》是「道玄文集」的**小说分站**，独立部署于 `https://sgxxs.pages.dev`。
 纯静态站点，无后端（不依赖字典 / AI 等 Pages Functions）。
 
 ---
 
-## 二、目录结构（仓库根 `F:\github-dx\sgx\`）
+## 二、目录结构（仓库根 `F:\github-dx\sgxxs\`）
 
 ```
 F:\github-dx\sgx\
@@ -78,7 +78,7 @@ F:\github-dx\sgx\
 
 ## 六、部署
 
-- **静态托管**：Cloudflare Pages（项目 `sgx`）直接托管，线上 `https://sgx.pages.dev`；
+- **静态托管**：Cloudflare Pages（项目 `sgxxs`）直接托管，线上 `https://sgxxs.pages.dev`；
 - 无后端 Functions，无需配置 KV / 环境变量；
 - 推送 `main` 分支即自动部署。
 
@@ -89,6 +89,6 @@ F:\github-dx\sgx\
 | 站点 | 线上地址 | 说明 |
 |---|---|---|
 | 道玄文集（主站） | `dxwj.pages.dev` | 诗词散文 |
-| 三国续-数字卜易传（本分站） | `sgx.pages.dev` | 小说 |
+| 三国续-数字卜易传（本分站） | `sgxxs.pages.dev` | 小说 |
 | 增删卜易 | `dxzsby.pages.dev` | 六爻占卜独立子系统 |
 | 三省轩主文集 | `sxxz.pages.dev` | 诗词散文姊妹站 |
