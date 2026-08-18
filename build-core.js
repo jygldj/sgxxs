@@ -28,8 +28,9 @@
      * 解析单个 md 文件。
      * 约定格式：
      *   第 1 行（首个 "# " 开头）：标题
-     *   之后 "> " 开头的行：分类 | 日期（竖线可用 | 或 ｜）
+     *   之后 "> " 开头的行：分类（或卷，竖线可用 | 或 ｜，如「> 诗」「>  |卷一」）
      *   其余：正文（##、###、![图](路径) 等标记原样保留，由前端渲染）
+     * 注：日期标注已取消，文章不再需要写日期。
      * 返回 { article, issues }；article 为 null 表示该文件不可用（致命问题）。
      */
     function parseMarkdown(filename, content) {
@@ -37,7 +38,6 @@
         var lines = String(content || '').replace(/\r\n?/g, '\n').split('\n');
         var title = '';
         var categoryRaw = '';
-        var dateStr = '';
         var juan = '';
         var bodyLines = [];
         var metaDone = false;
@@ -67,7 +67,6 @@
                         else if (p) restParts.push(p);
                     });
                     categoryRaw = (restParts[0] || '').trim();
-                    dateStr = (restParts[1] || '').trim();
                     juan = juanRaw;
                     metaDone = true;
                     continue;
@@ -88,10 +87,7 @@
             return { article: null, issues: issues };
         }
         if (!categoryRaw && !juan) {
-            issues.push({ level: 'warn', file: filename, message: '缺少分类/日期行（标题下应有一行「> 分类 | 日期」），已按「未分类」处理' });
-        }
-        if (categoryRaw && !dateStr) {
-            issues.push({ level: 'warn', file: filename, message: '分类行里没有日期（标准写法：> 诗 | 乙巳年五月初一），已留空' });
+            issues.push({ level: 'warn', file: filename, message: '缺少分类行（标题下应有一行「> 分类」或「> 卷X」），已按「未分类」处理' });
         }
 
         // 去掉正文首尾空行
@@ -120,7 +116,6 @@
                 fileNo: fileNo,
                 title: title,
                 category: normalizeCategory(categoryRaw),
-                date: dateStr || '未标注日期',
                 juan: juan,
                 body: bodyLines.join('\n')
             },
@@ -196,7 +191,7 @@
             generated: ts,
             count: articles.length,
             articles: articles.map(function (a) {
-                return { id: a.id, title: a.title, category: a.category, date: a.date, juan: a.juan || '', body: a.body };
+                return { id: a.id, title: a.title, category: a.category, juan: a.juan || '', body: a.body };
             })
         };
         return '// 三国续-数字卜易传 · 文章数据（由更新工具自动生成，请勿手工编辑）\n' +

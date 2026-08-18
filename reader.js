@@ -100,7 +100,7 @@
                         <a href="#${article.id}" onclick="event.preventDefault(); loadArticle(${realIndex})" class="${currentArticleIndex === realIndex ? 'active' : ''}">
                             <span class="article-number">${article.id}.</span>
                             ${currentSearchKeyword ? highlightKeyword(article.title, currentSearchKeyword) : article.title}
-                            <small>(${article.juan || article.date || ''})</small>
+                            <small>(${article.juan || ''})</small>
                         </a>
                     `;
                     fragment.appendChild(li);
@@ -144,7 +144,6 @@
                 document.getElementById('articleTitle').textContent = article.title;
                 document.getElementById('articleMeta').innerHTML = `
                     <span>卷：${article.juan || '—'}</span>
-                    <span>日期：${article.date}</span>
                     <span>编号：${article.id}</span>
                 `;
 

@@ -422,7 +422,7 @@
             <div class="empty-state">
                 <div class="icon">📖</div>
                 <p id="welcomeMsg">正在加载文章数据...</p>
-                <p style="font-size:0.85em; color:#A8A59B; margin-top:6px;">支持搜索标题、正文、分类、日期</p>
+                <p style="font-size:0.85em; color:#A8A59B; margin-top:6px;">支持搜索标题、正文、分类</p>
             </div>
         </div>
 
@@ -455,7 +455,6 @@
             id: a.id,
             title: a.title,
             category: a.category,
-            date: a.date,
             content: DXRender.renderBody(a.body, a.category),
             rawContent: a.body
         }));
@@ -526,7 +525,7 @@
                 <div class="empty-state">
                     <div class="icon">📖</div>
                     <p>共 ${articles.length} 篇文章，诗 ${stats['诗']} 篇，词 ${stats['词']} 篇，散文 ${stats['散文']} 篇，其他 ${stats['其它']} 篇</p>
-                    <p style="font-size:0.85em; color:#A8A59B; margin-top:6px;">支持搜索标题、正文、分类、日期</p>
+                    <p style="font-size:0.85em; color:#A8A59B; margin-top:6px;">支持搜索标题、正文、分类</p>
                 </div>
             `;
             document.getElementById('rightPanel').innerHTML = `
@@ -541,7 +540,7 @@
 
         const lowerKeyword = keyword.toLowerCase();
         currentResults = articles.filter(a => {
-            const searchText = (a.title + ' ' + a.category + ' ' + a.date + ' ' + a.rawContent).toLowerCase();
+            const searchText = (a.title + ' ' + a.category + ' ' + a.rawContent).toLowerCase();
             return searchText.includes(lowerKeyword);
         });
 
@@ -598,7 +597,6 @@
                     <div class="meta">
                         <span>#${articleIndex}</span>
                         <span>${a.category}</span>
-                        <span>${a.date}</span>
                     </div>
                     <div class="snippet-preview">${snippet}</div>
                     <div class="match-count">匹配 ${matchCount} 处</div>
@@ -635,7 +633,6 @@
                 <div class="preview-meta">
                     <span>#${articleIndex}</span>
                     <span>分类：${a.category}</span>
-                    <span>日期：${a.date}</span>
                     <span><a href="index1.html#${a.id}" style="color:#3A6351;text-decoration:none;border-bottom:1px dashed #3A6351;">阅读原文 →</a></span>
                 </div>
                 <div class="preview-body">${content}</div>
