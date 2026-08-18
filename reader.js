@@ -100,7 +100,7 @@
                         <a href="#${article.id}" onclick="event.preventDefault(); loadArticle(${realIndex})" class="${currentArticleIndex === realIndex ? 'active' : ''}">
                             <span class="article-number">${article.id}.</span>
                             ${currentSearchKeyword ? highlightKeyword(article.title, currentSearchKeyword) : article.title}
-                            <small>(${article.juan || ''})</small>
+                            ${article.juan ? '<small>(' + article.juan + ')</small>' : ''}
                         </a>
                     `;
                     fragment.appendChild(li);
